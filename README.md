@@ -1,0 +1,95 @@
+# before.
+
+**Small moments. Visible progress.**
+
+An offline photo journal for the things you’re growing, making, and becoming. Keep a photo, leave a note, and compare how things change over time.
+
+Built with **React Native, Expo SDK 57, Expo Router, and TypeScript** for iOS, Android, and a browser preview.
+
+<img src="docs/screenshots/home.png" width="800" alt="Before home screen" />
+
+<img src="docs/screenshots/comparison.png" width="280" alt="Before and after photo comparison" />
+
+## First working slice
+
+- Create and rename stories, with five categories and search.
+- Import photos from the system library; take photos on iOS and Android.
+- Keep dated moments with notes in a chronological journal.
+- Compare any two moments with a draggable before/after divider and accessible adjustment buttons.
+- Export a side-by-side PNG using native sharing or a browser download.
+- Delete individual moments or whole stories with confirmation.
+- Explore a bundled sample without adding demo data to your journal.
+- Keep everything on the device, with no account, analytics, or backend.
+
+This is an early **0.1.0 implementation**, not a store release. Native permission flows, native sharing, device accessibility, and signed binaries still need device testing before TestFlight or Google Play.
+
+## Run locally
+
+Use Node 24 (at least 24.3) and npm. The lockfile is committed.
+
+```sh
+nvm use
+npm ci
+npm start
+```
+
+Open the project in a compatible Expo Go client, or use the following commands:
+
+```sh
+npm run web       # Browser preview
+npm run ios       # iOS simulator (macOS/Xcode)
+npm run android   # Android emulator
+```
+
+No API keys or environment variables are required. Start a story and add your own photos, or choose **Explore a sample story**.
+
+## Checks
+
+```sh
+npm run check                     # ESLint + TypeScript + domain tests
+npx playwright install chromium  # Once per machine
+npm run test:e2e                   # Browser flow and persistence tests
+npx expo-doctor
+npx expo export --platform all    # Bundle iOS, Android, and web JavaScript
+```
+
+The browser suite covers creating/renaming/deleting a story, real file uploads, date validation, persistence across reloads, dragging the comparison divider, PNG dimensions, canceling deletion, and retrying a failed storage write. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
+
+## How it works
+
+- `src/app/`: Expo Router routes and native stack navigation.
+- `App.tsx`: application shell, editors, and save-before-update mutations.
+- `src/JournalProvider.tsx`: shared journal state across routes.
+- `src/domain.ts`: versioned journal model, validation, date ordering, and sample data.
+- `src/storage.ts` / `storage.web.ts`: AsyncStorage metadata on native; IndexedDB in the browser.
+- `src/media.ts` / `media.web.ts`: image resizing and durable storage. Native photos use paths relative to the app’s document directory so container paths can change safely. Browser photos are JPEG data URLs in IndexedDB.
+- `src/components/Comparison.tsx`: swipe comparison with keyboard-accessible adjustment buttons.
+- `src/export.ts` / `export.web.ts`: native capture/share and browser canvas export.
+- `src/screens/`: story collection, journal, and comparison views.
+
+Photos are normalized to JPEG with a maximum dimension of 1,600 px. Native images are copied out of the picker cache. Metadata is committed before the UI reports success; invalid stored data is never silently replaced with an empty journal. Browser storage is intended for preview and can be cleared by the browser.
+
+## Privacy and data
+
+Photos and notes stay in app storage. There is no cloud sync or full journal backup yet. Removing the app or clearing browser data can remove the journal. Exported comparisons are images, not restorable backups. OS-managed backups are controlled by device settings.
+
+Deleting a story removes its metadata and attempts to remove its app-owned image files; original photo-library files are untouched. A full offline web install/service worker is not included. The native app bundles its sample photos and fonts.
+
+## Toward the stores
+
+See [the release checklist](docs/RELEASE.md) for the next milestones. EAS build profiles are included, but the project has not been connected to an Expo account and no signing credentials have been created. The initial bundle ID is `com.a1231231123bc.before`; confirm it before the first store build.
+
+## Dependency audit
+
+The initial dependency audit reports upstream advisories in `braces`, `decode-uri-component`, `node-forge`, and `uuid`, propagated through the Expo/Metro/Xcode tooling and routing dependencies. Compatible fixes were applied where available; the audit still reports 31 affected dependency entries. npm proposes incompatible framework downgrades for the remaining items, so `npm audit fix --force` has not been used. Review these advisories and patched SDK/tooling releases before distribution; passing the app checks does not mean the dependency audit is clean.
+
+## Credits
+
+Sample photographs are bundled for offline demonstration under the [Unsplash License](https://unsplash.com/license):
+
+- [Josh Duke — plant in a white ceramic pot](https://unsplash.com/photos/DHhuqwyjSuo)
+- [Febri Adiawarja — plant in a terracotta pot](https://unsplash.com/photos/TSKYvXf1d4M)
+
+They show different plants, not an actual before/after transformation. This is stated in the sample story.
+
+DM Sans and DM Serif Display are distributed under the SIL Open Font License; license files are included in `docs/licenses/`. `assets/brand.svg` is the app’s editable vector icon source.

@@ -1,25 +1,55 @@
 {
   "expo": {
-    "name": "before",
+    "name": "Before",
     "slug": "before",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "before",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.a1231231123bc.before",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.a1231231123bc.before",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#F7F5EF"
       },
-      "predictiveBackGestureEnabled": false
+      "blockedPermissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/icon.png",
+      "name": "Before \u2014 Your progress journal",
+      "description": "Small moments. Visible progress. A private photo journal.",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose photos to keep in your private Before journal.",
+          "cameraPermission": "Take photos to document your progress in Before.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-sharing",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F7F5EF",
+          "image": "./assets/icon.png",
+          "imageWidth": 160
+        }
+      ],
+      "expo-asset",
+      "expo-router"
+    ]
   }
 }
