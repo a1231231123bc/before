@@ -14,4 +14,8 @@ export default defineConfig({
     timeout: 120_000,
   },
   workers: 1,
+  projects: [
+    { name: 'chromium', use: { browserName: 'chromium' } },
+    { name: 'webkit', testMatch: '**/video.spec.ts', use: { browserName: 'webkit' } },
+  ],
 });

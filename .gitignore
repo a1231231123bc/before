@@ -45,3 +45,6 @@ yarn-error.*
 /playwright-report/
 /coverage/
 .env
+
+# Rebuilt by postinstall / npm run build:video
+/src/video/generated/

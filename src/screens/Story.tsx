@@ -6,6 +6,8 @@ import { colors as c, fonts as f } from '../theme';
 import { Button, Icon, IconButton, Label, s as ui } from '../components/UI';
 import { Comparison } from '../components/Comparison';
 import { exportComparison } from '../export';
+import { VideoExportSheet } from '../video/VideoExportSheet';
+import type { VideoInput } from '../video/spec';
 
 export function Story({
   project,
@@ -139,6 +141,7 @@ export function CompareScreen({
   const [afterId, setAfterId] = useState(entries.at(-1)!.id);
   const [selecting, setSelecting] = useState<'before' | 'after'>('before');
   const [exporting, setExporting] = useState(false);
+  const [videoInput, setVideoInput] = useState<VideoInput | null>(null);
   const [loaded, setLoaded] = useState<Record<string, boolean>>({});
   const card = useRef<View>(null);
   const before = entries.find((e) => e.id === beforeId)!;
@@ -221,6 +224,21 @@ export function CompareScreen({
         ))}
       </ScrollView>
       <View style={{ gap: 12 }}>
+        <Label>YOUR PROGRESS, IN MOTION</Label>
+        <Text style={ui.body}>
+          A six-second before-and-after loop, ready for Stories and Reels.
+        </Text>
+        <Button
+          title="Create 6-second video"
+          icon="share"
+          disabled={!loaded[before.id] || !loaded[after.id]}
+          onPress={() => setVideoInput({ title: project.title, before, after })}
+        />
+        <Text style={[ui.body, { fontSize: 12 }]}>
+          Vertical MP4 · Save to Photos or share · Made on your device
+        </Text>
+      </View>
+      <View style={{ gap: 12 }}>
         <Label>YOUR SHARE CARD</Label>
         <View ref={card} collapsable={false} style={s.shareCard}>
           <Text style={s.shareTitle}>{project.title}</Text>
@@ -254,6 +272,7 @@ export function CompareScreen({
           A keepsake of how far you’ve come.
         </Text>
       </View>
+      {videoInput && <VideoExportSheet input={videoInput} onClose={() => setVideoInput(null)} />}
     </View>
   );
 }

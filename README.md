@@ -17,6 +17,7 @@ Built with **React Native, Expo SDK 57, Expo Router, and TypeScript** for iOS, A
 - Keep dated moments with notes in a chronological journal.
 - Compare any two moments with a draggable before/after divider and accessible adjustment buttons.
 - Export a side-by-side PNG using native sharing or a browser download.
+- Create a six-second vertical MP4 with an animated before/after slider, preview it, then save to Photos or share. Encoding happens on the device.
 - Delete individual moments or whole stories with confirmation.
 - Explore a bundled sample without adding demo data to your journal.
 - Keep everything on the device, with no account, analytics, or backend.
@@ -47,13 +48,13 @@ No API keys or environment variables are required. Start a story and add your ow
 
 ```sh
 npm run check                     # ESLint + TypeScript + domain tests
-npx playwright install chromium  # Once per machine
+npx playwright install chromium webkit  # Once per machine
 npm run test:e2e                   # Browser flow and persistence tests
 npx expo-doctor
 npx expo export --platform all    # Bundle iOS, Android, and web JavaScript
 ```
 
-The browser suite covers creating/renaming/deleting a story, real file uploads, date validation, persistence across reloads, dragging the comparison divider, PNG dimensions, canceling deletion, and retrying a failed storage write. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
+The browser suite covers creating/renaming/deleting a story, real file uploads, date validation, persistence across reloads, dragging the comparison divider, PNG dimensions, canceling deletion, and retrying a failed storage write. Video tests in Chromium and WebKit create, play and download a real six-second 1080 × 1920 H.264 MP4, and cover cancellation. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
 
 ## How it works
 
@@ -65,13 +66,14 @@ The browser suite covers creating/renaming/deleting a story, real file uploads, 
 - `src/media.ts` / `media.web.ts`: image resizing and durable storage. Native photos use paths relative to the app’s document directory so container paths can change safely. Browser photos are JPEG data URLs in IndexedDB.
 - `src/components/Comparison.tsx`: swipe comparison with keyboard-accessible adjustment buttons.
 - `src/export.ts` / `export.web.ts`: native capture/share and browser canvas export.
+- `src/video/`: offline canvas/WebAssembly video renderer, export preview, native Photos/share and browser download. See [video export notes](docs/VIDEO-EXPORT.md) for architecture, regeneration and device checks.
 - `src/screens/`: story collection, journal, and comparison views.
 
 Photos are normalized to JPEG with a maximum dimension of 1,600 px. Native images are copied out of the picker cache. Metadata is committed before the UI reports success; invalid stored data is never silently replaced with an empty journal. Browser storage is intended for preview and can be cleared by the browser.
 
 ## Privacy and data
 
-Photos and notes stay in app storage. There is no cloud sync or full journal backup yet. Removing the app or clearing browser data can remove the journal. Exported comparisons are images, not restorable backups. OS-managed backups are controlled by device settings.
+Photos and notes stay in app storage. There is no cloud sync or full journal backup yet. Removing the app or clearing browser data can remove the journal. Exported images/videos are not restorable journal backups. OS-managed backups are controlled by device settings.
 
 Deleting a story removes its metadata and attempts to remove its app-owned image files; original photo-library files are untouched. A full offline web install/service worker is not included. The native app bundles its sample photos and fonts.
 
@@ -93,3 +95,5 @@ Sample photographs are bundled for offline demonstration under the [Unsplash Lic
 They show different plants, not an actual before/after transformation. This is stated in the sample story.
 
 DM Sans and DM Serif Display are distributed under the SIL Open Font License; license files are included in `docs/licenses/`. `assets/brand.svg` is the app’s editable vector icon source.
+
+Video encoding uses h264-mp4-encoder (MIT), minih264 (CC0), and libmp4v2 (MPL 1.1). [Licenses and source](docs/VIDEO-EXPORT.md#licenses-and-source).

@@ -49,7 +49,16 @@
         }
       ],
       "expo-asset",
-      "expo-router"
+      "expo-router",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Choose photos to keep in your private Before journal.",
+          "savePhotosPermission": "Save your Before progress videos to Photos to share them on Instagram.",
+          "granularPermissions": [],
+          "isAccessMediaLocationEnabled": false
+        }
+      ]
     ]
   }
 }

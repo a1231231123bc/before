@@ -5,7 +5,7 @@ const samples: Record<string, number> = {
   'sample:white': require('../assets/demo/plant-white.jpg'),
   'sample:terracotta': require('../assets/demo/plant-terracotta.jpg'),
 };
-export function photoSource(uri: string) {
+export function photoSource(uri: string): number | { uri: string } {
   return samples[uri] ?? { uri: localPhotoUri(uri) };
 }
 export function photoUri(uri: string) {

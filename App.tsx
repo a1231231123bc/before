@@ -574,11 +574,12 @@ function About() {
         </Text>
         <Text style={ui.body}>
           Uninstalling the app or clearing browser data can remove your journal. Export comparisons
-          you want to keep. The export is an image, not a full journal backup.
+          you want to keep. Images and videos are keepsakes, not a full journal backup.
         </Text>
         <Text style={ui.body}>
           Camera access is requested only when you take a photo. Choosing a photo opens your
-          system’s photo picker. Sharing sends only the comparison you choose to the app you select.
+          system’s photo picker. Saving a video asks for permission to add it to Photos. Sharing
+          sends only the comparison you choose to the app you select.
         </Text>
       </View>
       <View style={s.aboutCard}>
@@ -591,6 +592,18 @@ function About() {
           icon="arrow"
           tone="secondary"
           onPress={() => void Linking.openURL('https://github.com/a1231231123bc/before')}
+        />
+        <Text style={ui.body}>
+          Video export uses h264-mp4-encoder (MIT), minih264 (CC0), and libmp4v2 (MPL 1.1).
+        </Text>
+        <Button
+          title="Video encoder licenses and source"
+          tone="ghost"
+          onPress={() =>
+            void Linking.openURL(
+              'https://github.com/a1231231123bc/before/blob/main/docs/VIDEO-EXPORT.md#licenses-and-source',
+            )
+          }
         />
       </View>
       <Text style={ui.body}>

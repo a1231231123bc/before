@@ -6,6 +6,7 @@
 - Photo import, native camera integration, dated notes and timeline.
 - Durable local storage, schema validation and save-failure recovery.
 - Two-photo comparison and PNG export/share integration.
+- Six-second 1080 × 1920 MP4 slider export, playable preview, save to Photos and video sharing. [Implementation and checks](VIDEO-EXPORT.md).
 - Confirmation before deleting a photo or story.
 - Browser end-to-end tests, domain tests, type checking and CI.
 
@@ -14,6 +15,7 @@
 - Confirm iOS/Android priority and bundle identifiers.
 - Test on physical devices: picker cancellation, denied/limited permissions, camera, HEIC/large images, full storage, process interruption, native PNG sharing, rotation, safe areas and keyboard.
 - Test Android back navigation and recovery when Android kills the picker activity.
+- Test MP4 export on physical devices, saving with add-only Photos access, denial/retry, share cancellation, backgrounding, low storage and Instagram import. Measure memory and encoding time on older phones.
 - Test VoiceOver/TalkBack, large text and reduced motion; refine comparison gestures on touch hardware.
 - Add complete journal backup/import before users entrust irreplaceable photo collections to the app.
 - Decide whether Russian localization and dark mode are part of 1.0.
