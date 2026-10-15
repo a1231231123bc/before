@@ -56,7 +56,7 @@ npx expo-doctor
 npx expo export --platform all    # Bundle iOS, Android, and web JavaScript
 ```
 
-The browser suite covers creating and extending stories without typing, optional date/note/title/category edits, search, cancellation without empty stories, persistence across reloads, dragging the comparison divider, PNG dimensions, deletion, and retrying/discarding failed photo saves without duplicates. Video tests in Chromium and WebKit create, play and download a real six-second 1080 × 1920 H.264 MP4, and cover cancellation. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
+The browser suite covers creating and extending stories without typing, optional date/note/title/category edits, search, cancellation without empty stories, persistence across reloads, dragging the comparison divider, PNG dimensions, deletion, and retrying/discarding failed photo saves without duplicates. Video tests in Chromium and WebKit create, play and download a real six-second 1080 × 1920 H.264 MP4, and cover cancellation. GitHub Actions runs Chromium and JS bundle checks on Linux, and WebKit video checks on macOS, as [recommended by Playwright for Safari media playback](https://playwright.dev/docs/browsers#webkit). A JS export is not a signed native build.
 
 ## How it works
 

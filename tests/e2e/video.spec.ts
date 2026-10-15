@@ -17,7 +17,9 @@ test('render a playable six-second portrait MP4 and download it', async ({ page 
       () =>
         video.evaluate((element: HTMLVideoElement) => ({
           playable: element.readyState >= 2,
-          error: element.error?.message ?? null,
+          error: element.error
+            ? { code: element.error.code, message: element.error.message }
+            : null,
         })),
       { timeout: 30_000, message: 'The exported MP4 should load playable frames' },
     )
