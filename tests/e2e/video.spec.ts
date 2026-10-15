@@ -13,8 +13,15 @@ test('render a playable six-second portrait MP4 and download it', async ({ page 
   await expect(page.getByRole('alert')).toHaveCount(0);
   const video = page.frameLocator('iframe[title="Progress video preview"]').locator('video');
   await expect
-    .poll(() => video.evaluate((element: HTMLVideoElement) => element.readyState))
-    .toBeGreaterThanOrEqual(2);
+    .poll(
+      () =>
+        video.evaluate((element: HTMLVideoElement) => ({
+          playable: element.readyState >= 2,
+          error: element.error?.message ?? null,
+        })),
+      { timeout: 30_000, message: 'The exported MP4 should load playable frames' },
+    )
+    .toEqual({ playable: true, error: null });
   const metadata = await video.evaluate((element: HTMLVideoElement) => {
     element.pause();
     return { width: element.videoWidth, height: element.videoHeight, duration: element.duration };
