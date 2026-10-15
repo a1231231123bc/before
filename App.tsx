@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Image,
   Linking,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -46,9 +45,9 @@ type Screen =
   | { name: 'story'; id: string }
   | { name: 'compare'; id: string };
 type Dialog =
-  | { type: 'project'; project?: Project }
-  | { type: 'picker'; projectId: string }
-  | { type: 'moment'; projectId: string; imageUri: string }
+  | { type: 'project'; project: Project }
+  | { type: 'unsaved'; projectId?: string; entry: Entry }
+  | { type: 'moment'; project: Project; entry: Entry }
   | { type: 'deleteProject'; project: Project }
   | { type: 'deleteEntry'; project: Project; entry: Entry };
 
@@ -89,9 +88,13 @@ export function BeforeApp({ screen }: { screen: Screen }) {
   const [saving, setSaving] = useState(false);
   const [picking, setPicking] = useState(false);
   const lock = useRef(false);
+  const pickLock = useRef(false);
+  const latestJournal = useRef(journal);
+  latestJournal.current = journal;
   const scroll = useRef<ScrollView>(null);
   const { width } = useWindowDimensions();
   const wide = width >= 760;
+  const screenId = 'id' in screen ? screen.id : undefined;
   const current =
     'id' in screen
       ? screen.id === 'sample'
@@ -100,7 +103,7 @@ export function BeforeApp({ screen }: { screen: Screen }) {
       : undefined;
   useEffect(() => {
     scroll.current?.scrollTo({ y: 0, animated: false });
-  }, [screen]);
+  }, [screen.name, screenId]);
   const navigate = (next: Screen) => {
     setError('');
     if (next.name === 'home') router.navigate('/');
@@ -119,7 +122,7 @@ export function BeforeApp({ screen }: { screen: Screen }) {
   };
   const closeDialog = () => {
     if (lock.current) return;
-    if (dialog?.type === 'moment') void removePhoto(dialog.imageUri).catch(() => {});
+    if (dialog?.type === 'unsaved') void removePhoto(dialog.entry.imageUri).catch(() => {});
     setDialog(null);
     setError('');
   };
@@ -142,36 +145,62 @@ export function BeforeApp({ screen }: { screen: Screen }) {
       setSaving(false);
     }
   };
-  const saveProject = async (title: string, category: Category, existing?: Project) => {
-    const project: Project = existing
-      ? { ...existing, title, category }
-      : { id: makeId(), title, category, createdAt: new Date().toISOString(), entries: [] };
+  const saveProject = async (title: string, category: Category, existing: Project) => {
     await commit(
       {
         ...journal,
+        projects: journal.projects.map((p) =>
+          p.id === existing.id ? { ...p, title, category } : p,
+        ),
+      },
+      () => setDialog(null),
+    );
+  };
+  const savePhoto = async (draft: Extract<Dialog, { type: 'unsaved' }>) => {
+    const latest = latestJournal.current;
+    const existing = latest.projects.find((p) => p.id === draft.projectId);
+    if (draft.projectId && !existing) {
+      setDialog(draft);
+      setError('This story was deleted. Close this photo and start a new story.');
+      return;
+    }
+    let number = 1;
+    while (latest.projects.some((p) => p.title === `Story ${number}`)) number++;
+    const project: Project = existing
+      ? { ...existing, entries: [...existing.entries, draft.entry] }
+      : {
+          id: makeId(),
+          title: `Story ${number}`,
+          category: 'Everyday',
+          createdAt: draft.entry.createdAt,
+          entries: [draft.entry],
+        };
+    const saved = await commit(
+      {
+        ...latest,
         projects: existing
-          ? journal.projects.map((p) => (p.id === project.id ? project : p))
-          : [project, ...journal.projects],
+          ? latest.projects.map((p) => (p.id === project.id ? project : p))
+          : [project, ...latest.projects],
       },
       () => {
         setDialog(null);
-        navigate({ name: 'story', id: project.id });
+        if (!existing) navigate({ name: 'story', id: project.id });
+        else scroll.current?.scrollTo({ y: 0, animated: true });
       },
     );
+    // Keep the prepared photo for retry; never report success before persistence.
+    if (!saved) setDialog(draft);
   };
-  const pick = async (projectId: string, camera: boolean) => {
-    if (picking) return;
+  const pick = async (projectId: string | undefined, camera: boolean) => {
+    if (pickLock.current || lock.current) return;
+    pickLock.current = true;
     setPicking(true);
-    setDialog(null);
     setError('');
     try {
-      if (Platform.OS !== 'web') await new Promise((resolve) => setTimeout(resolve, 350));
       if (camera) {
         const permission = await ImagePicker.requestCameraPermissionsAsync();
         if (!permission.granted)
-          throw new Error(
-            'Camera access is off. You can enable it in device settings or choose a photo from your library.',
-          );
+          throw new Error('Camera access is off. Enable it in device settings or use Library.');
       }
       const options: ImagePicker.ImagePickerOptions = {
         mediaTypes: ['images'],
@@ -184,7 +213,17 @@ export function BeforeApp({ screen }: { screen: Screen }) {
       if (result.canceled) return;
       const image = result.assets[0];
       const imageUri = await preparePhoto(image.uri, image.width, image.height);
-      showDialog({ type: 'moment', projectId, imageUri });
+      await savePhoto({
+        type: 'unsaved',
+        projectId,
+        entry: {
+          id: makeId(),
+          imageUri,
+          date: today(),
+          note: '',
+          createdAt: new Date().toISOString(),
+        },
+      });
     } catch (e) {
       setError(
         e instanceof Error
@@ -192,23 +231,24 @@ export function BeforeApp({ screen }: { screen: Screen }) {
           : 'This photo could not be opened. Please try another photo.',
       );
     } finally {
+      pickLock.current = false;
       setPicking(false);
     }
   };
   const saveMoment = async (date: string, note: string) => {
     if (dialog?.type !== 'moment') return;
-    const entry: Entry = {
-      id: makeId(),
-      imageUri: dialog.imageUri,
-      date,
-      note,
-      createdAt: new Date().toISOString(),
-    };
     await commit(
       {
         ...journal,
         projects: journal.projects.map((p) =>
-          p.id === dialog.projectId ? { ...p, entries: [...p.entries, entry] } : p,
+          p.id === dialog.project.id
+            ? {
+                ...p,
+                entries: p.entries.map((entry) =>
+                  entry.id === dialog.entry.id ? { ...entry, date, note } : entry,
+                ),
+              }
+            : p,
         ),
       },
       () => setDialog(null),
@@ -251,8 +291,11 @@ export function BeforeApp({ screen }: { screen: Screen }) {
       </View>
     );
   return (
-    <SafeAreaView style={s.root} edges={['top', 'left', 'right']}>
-      <View style={[s.header, wide && { paddingHorizontal: 40 }]}>
+    <SafeAreaView style={s.root} edges={['top', 'bottom', 'left', 'right']}>
+      <View
+        pointerEvents={picking || saving ? 'none' : 'auto'}
+        style={[s.header, wide && { paddingHorizontal: 40 }]}
+      >
         <View style={s.headerInner}>
           <Pressable
             accessibilityRole="button"
@@ -268,7 +311,6 @@ export function BeforeApp({ screen }: { screen: Screen }) {
             </Text>
           </Pressable>
           <View style={ui.row}>
-            {wide && <Text style={s.headerNote}>NOTICE THE LITTLE THINGS</Text>}
             <IconButton
               name="info"
               label="About Before"
@@ -279,6 +321,7 @@ export function BeforeApp({ screen }: { screen: Screen }) {
       </View>
       <ScrollView
         ref={scroll}
+        pointerEvents={picking || saving ? 'none' : 'auto'}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[s.content, wide && { padding: 40 }]}
       >
@@ -314,7 +357,8 @@ export function BeforeApp({ screen }: { screen: Screen }) {
           {screen.name === 'home' && (
             <Home
               projects={journal.projects}
-              onCreate={() => showDialog({ type: 'project' })}
+              onCreate={(camera) => void pick(undefined, camera)}
+              busy={picking || saving}
               onOpen={(id) => navigate({ name: 'story', id })}
               onDemo={() => navigate({ name: 'story', id: 'sample' })}
             />
@@ -323,18 +367,16 @@ export function BeforeApp({ screen }: { screen: Screen }) {
             <Story
               project={current}
               demo={current.id === 'sample'}
-              onAdd={() => !picking && showDialog({ type: 'picker', projectId: current.id })}
+              onAdd={(camera) => void pick(current.id, camera)}
               onEdit={() => showDialog({ type: 'project', project: current })}
-              onDelete={() => showDialog({ type: 'deleteProject', project: current })}
-              onDeleteEntry={(entry) =>
-                showDialog({ type: 'deleteEntry', project: current, entry })
-              }
+              onEditEntry={(entry) => showDialog({ type: 'moment', project: current, entry })}
               onCompare={() => navigate({ name: 'compare', id: current.id })}
-              onCreate={() => showDialog({ type: 'project' })}
+              onCreate={(camera) => void pick(undefined, camera)}
+              busy={picking || saving}
             />
           )}
           {screen.name === 'compare' && current && current.entries.length >= 2 && (
-            <CompareScreen key={current.id} project={current} onError={setError} />
+            <CompareScreen key={current.id} project={current} />
           )}
           {screen.name === 'about' && <About />}
           {'id' in screen && !current && (
@@ -351,64 +393,45 @@ export function BeforeApp({ screen }: { screen: Screen }) {
           )}
         </View>
       </ScrollView>
-      <SafeAreaView edges={['bottom']} style={s.nav}>
-        <View style={s.navInner}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Your stories"
-            onPress={() => navigate({ name: 'home' })}
-            style={s.navItem}
-          >
-            <Icon name="grid" color={screen.name === 'about' ? c.muted : c.green} />
-            <Text style={[s.navText, screen.name !== 'about' && { color: c.green }]}>Stories</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Create a story"
-            onPress={() => showDialog({ type: 'project' })}
-            style={s.navPlus}
-          >
-            <Icon name="plus" color={c.white} size={25} />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="About and privacy"
-            onPress={() => navigate({ name: 'about' })}
-            style={s.navItem}
-          >
-            <Icon name="leaf" color={screen.name === 'about' ? c.green : c.muted} />
-            <Text style={[s.navText, screen.name === 'about' && { color: c.green }]}>About</Text>
-          </Pressable>
-        </View>
-      </SafeAreaView>
       {dialog?.type === 'project' && (
-        <Sheet title={dialog.project ? 'Make it yours' : 'A new beginning'} onClose={closeDialog}>
+        <Sheet title="Story details" onClose={closeDialog}>
           <ProjectForm project={dialog.project} busy={saving} error={error} onSave={saveProject} />
-        </Sheet>
-      )}
-      {dialog?.type === 'picker' && (
-        <Sheet title="Keep this moment" onClose={closeDialog}>
-          <Text style={ui.body}>
-            Choose a photo of your progress. The everyday details are worth remembering, too.
-          </Text>
           <Button
-            title="Choose from library"
-            icon="image"
-            onPress={() => void pick(dialog.projectId, false)}
+            title="Delete story"
+            tone="ghost"
+            icon="trash"
+            disabled={saving}
+            onPress={() => showDialog({ type: 'deleteProject', project: dialog.project })}
           />
-          {Platform.OS !== 'web' && (
-            <Button
-              title="Take a photo"
-              icon="camera"
-              tone="secondary"
-              onPress={() => void pick(dialog.projectId, true)}
-            />
-          )}
         </Sheet>
       )}
       {dialog?.type === 'moment' && (
-        <Sheet title="A moment worth keeping" onClose={closeDialog}>
-          <MomentForm uri={dialog.imageUri} error={error} busy={saving} onSave={saveMoment} />
+        <Sheet title="Photo details" onClose={closeDialog}>
+          <MomentForm entry={dialog.entry} error={error} busy={saving} onSave={saveMoment} />
+          <Button
+            title="Delete photo"
+            tone="ghost"
+            icon="trash"
+            disabled={saving}
+            onPress={() =>
+              showDialog({ type: 'deleteEntry', project: dialog.project, entry: dialog.entry })
+            }
+          />
+        </Sheet>
+      )}
+      {dialog?.type === 'unsaved' && (
+        <Sheet title="Photo not saved" onClose={closeDialog}>
+          <Image
+            source={photoSource(dialog.entry.imageUri)}
+            style={{ width: '100%', height: 210, borderRadius: 16 }}
+          />
+          {!!error && (
+            <Text accessibilityRole="alert" style={s.errorText}>
+              {error}
+            </Text>
+          )}
+          <Button title="Retry saving photo" busy={saving} onPress={() => void savePhoto(dialog)} />
+          <Button title="Discard photo" tone="ghost" disabled={saving} onPress={closeDialog} />
         </Sheet>
       )}
       {(dialog?.type === 'deleteProject' || dialog?.type === 'deleteEntry') && (
@@ -446,16 +469,15 @@ function ProjectForm({
   error,
   onSave,
 }: {
-  project?: Project;
+  project: Project;
   busy: boolean;
   error: string;
-  onSave: (title: string, category: Category, existing?: Project) => Promise<void>;
+  onSave: (title: string, category: Category, existing: Project) => Promise<void>;
 }) {
-  const [title, setTitle] = useState(project?.title ?? '');
-  const [category, setCategory] = useState<Category>(project?.category ?? 'Everyday');
+  const [title, setTitle] = useState(project.title);
+  const [category, setCategory] = useState<Category>(project.category);
   return (
     <>
-      <Text style={ui.body}>What would you like to watch change?</Text>
       <Field
         label="Story name"
         placeholder="My little balcony garden"
@@ -465,7 +487,7 @@ function ProjectForm({
         autoFocus
       />
       <View style={{ gap: 12 }}>
-        <Text style={s.fieldLabel}>Make a little space for</Text>
+        <Text style={s.fieldLabel}>Category</Text>
         <View style={s.categories}>
           {CATEGORIES.map((value) => (
             <Pressable
@@ -489,34 +511,36 @@ function ProjectForm({
         </Text>
       )}
       <Button
-        title={project ? 'Save changes' : 'Create story'}
-        icon={project ? 'check' : 'arrow'}
+        title="Save changes"
+        icon="check"
         busy={busy}
         disabled={!title.trim()}
         onPress={() => void onSave(title.trim(), category, project)}
       />
-      <Text style={s.smallPrint}>Just for you. No account needed.</Text>
     </>
   );
 }
 
 function MomentForm({
-  uri,
+  entry,
   busy,
   error,
   onSave,
 }: {
-  uri: string;
+  entry: Entry;
   busy: boolean;
   error: string;
   onSave: (date: string, note: string) => Promise<void>;
 }) {
-  const [date, setDate] = useState(today());
-  const [note, setNote] = useState('');
+  const [date, setDate] = useState(entry.date);
+  const [note, setNote] = useState(entry.note);
   const valid = isValidDate(date) && date <= today();
   return (
     <>
-      <Image source={photoSource(uri)} style={{ width: '100%', height: 210, borderRadius: 16 }} />
+      <Image
+        source={photoSource(entry.imageUri)}
+        style={{ width: '100%', height: 210, borderRadius: 16 }}
+      />
       <Field
         label="Date (YYYY-MM-DD)"
         value={date}
@@ -531,12 +555,12 @@ function MomentForm({
         </Text>
       )}
       <Field
-        label="A little note (optional)"
+        label="Note (optional)"
         value={note}
         onChangeText={setNote}
         multiline
         maxLength={500}
-        placeholder="What changed? What would you like to remember?"
+        placeholder="Anything to remember?"
       />
       {!!error && (
         <Text accessibilityRole="alert" style={s.errorText}>
@@ -544,7 +568,7 @@ function MomentForm({
         </Text>
       )}
       <Button
-        title="Save moment"
+        title="Save changes"
         icon="check"
         busy={busy}
         disabled={!valid}
@@ -666,35 +690,8 @@ const s = StyleSheet.create({
     color: c.ink,
     letterSpacing: -1.2,
   },
-  headerNote: {
-    fontFamily: f.bold,
-    fontSize: 9,
-    letterSpacing: 1.5,
-    color: c.muted,
-    marginRight: 16,
-  },
-  content: { padding: 22, paddingBottom: 38 },
-  container: { maxWidth: 1040, width: '100%', alignSelf: 'center' },
-  nav: { borderTopWidth: 1, borderColor: c.line, backgroundColor: c.paper },
-  navInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '100%',
-    maxWidth: 500,
-    alignSelf: 'center',
-    paddingVertical: 11,
-  },
-  navItem: { gap: 5, minWidth: 80, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
-  navText: { fontFamily: f.medium, fontSize: 11, color: c.muted },
-  navPlus: {
-    width: 48,
-    height: 48,
-    borderRadius: 17,
-    backgroundColor: c.accent,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  content: { padding: 22, paddingBottom: 32 },
+  container: { maxWidth: 760, width: '100%', alignSelf: 'center' },
   errorBox: {
     backgroundColor: '#F8E5DD',
     borderRadius: 14,
@@ -715,7 +712,6 @@ const s = StyleSheet.create({
   },
   categorySelected: { backgroundColor: c.green, borderColor: c.green },
   categoryText: { fontFamily: f.medium, fontSize: 13, color: c.ink },
-  smallPrint: { fontFamily: f.regular, fontSize: 12, color: c.muted, textAlign: 'center' },
   aboutCard: {
     padding: 24,
     gap: 17,

@@ -2,19 +2,21 @@
 
 **Small moments. Visible progress.**
 
-An offline photo journal for the things you’re growing, making, and becoming. Keep a photo, leave a note, and compare how things change over time.
+An offline photo journal for the things you’re growing, making, and becoming. Take a photo and compare how things change over time. No forms to fill in.
 
 Built with **React Native, Expo SDK 57, Expo Router, and TypeScript** for iOS, Android, and a browser preview.
 
-<img src="docs/screenshots/home.png" width="800" alt="Before home screen" />
+<img src="docs/screenshots/home.png" width="280" alt="Start with a photo, without filling in a form" />
+<img src="docs/screenshots/story.png" width="280" alt="Compact story gallery" />
 
 <img src="docs/screenshots/comparison.png" width="280" alt="Before and after photo comparison" />
 
 ## First working slice
 
-- Create and rename stories, with five categories and search.
-- Import photos from the system library; take photos on iOS and Android.
-- Keep dated moments with notes in a chronological journal.
+- Start a story with a photo: an automatic name and today’s date, with no required typing.
+- Take photos on iOS and Android or import from the system library; each photo saves immediately.
+- Tap a photo to optionally edit its date or note. Rename stories and choose from five categories in story details; search by name or category.
+- Browse a compact photo gallery, with the latest first.
 - Compare any two moments with a draggable before/after divider and accessible adjustment buttons.
 - Export a side-by-side PNG using native sharing or a browser download.
 - Create a six-second vertical MP4 with an animated before/after slider, preview it, then save to Photos or share. Encoding happens on the device.
@@ -42,7 +44,7 @@ npm run ios       # iOS simulator (macOS/Xcode)
 npm run android   # Android emulator
 ```
 
-No API keys or environment variables are required. Start a story and add your own photos, or choose **Explore a sample story**.
+No API keys or environment variables are required. Tap **Take photo** or **Library** (**Add photo** on web) to start with your own photo, or choose **Explore a sample story**.
 
 ## Checks
 
@@ -54,7 +56,7 @@ npx expo-doctor
 npx expo export --platform all    # Bundle iOS, Android, and web JavaScript
 ```
 
-The browser suite covers creating/renaming/deleting a story, real file uploads, date validation, persistence across reloads, dragging the comparison divider, PNG dimensions, canceling deletion, and retrying a failed storage write. Video tests in Chromium and WebKit create, play and download a real six-second 1080 × 1920 H.264 MP4, and cover cancellation. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
+The browser suite covers creating and extending stories without typing, optional date/note/title/category edits, search, cancellation without empty stories, persistence across reloads, dragging the comparison divider, PNG dimensions, deletion, and retrying/discarding failed photo saves without duplicates. Video tests in Chromium and WebKit create, play and download a real six-second 1080 × 1920 H.264 MP4, and cover cancellation. GitHub Actions runs the checks and builds the JS bundles. A JS export is not a signed native build.
 
 ## How it works
 
