@@ -24,7 +24,7 @@
     },
     "web": {
       "favicon": "./assets/icon.png",
-      "name": "Before \u2014 Your progress journal",
+      "name": "Before — Your progress journal",
       "description": "Small moments. Visible progress. A private photo journal.",
       "bundler": "metro",
       "output": "single"
@@ -59,6 +59,13 @@
           "isAccessMediaLocationEnabled": false
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e259c79c-d0dd-4a06-aa1f-abf38ccec722"
+      }
+    },
+    "owner": "pavel667"
   }
 }

@@ -81,7 +81,7 @@ Deleting a story removes its metadata and attempts to remove its app-owned image
 
 ## Toward the stores
 
-See [the release checklist](docs/RELEASE.md) for the next milestones. EAS build profiles are included, but the project has not been connected to an Expo account and no signing credentials have been created. The initial bundle ID is `com.a1231231123bc.before`; confirm it before the first store build.
+See [the TestFlight steps and release checklist](docs/RELEASE.md) for the next milestones. The project is linked to [@pavel667/before on EAS](https://expo.dev/accounts/pavel667/projects/before). The `production` profile builds a signed store binary with Node 24 and an SDK 57 iOS build image, with build numbers managed by EAS. Signing and the first TestFlight upload still require the owner's active Apple Developer Program membership and Apple authentication. The bundle ID is `com.a1231231123bc.before`.
 
 ## Dependency audit
 
