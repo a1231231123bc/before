@@ -37,6 +37,7 @@ import { photoSource } from './src/photos';
 import { colors as c, fonts as f } from './src/theme';
 import { Button, Field, Icon, IconButton, Label, Sheet, s as ui } from './src/components/UI';
 import { Home } from './src/screens/Home';
+import { PhotoActions } from './src/components/PhotoActions';
 import { CompareScreen, Story } from './src/screens/Story';
 
 type Screen =
@@ -357,8 +358,6 @@ export function BeforeApp({ screen }: { screen: Screen }) {
           {screen.name === 'home' && (
             <Home
               projects={journal.projects}
-              onCreate={(camera) => void pick(undefined, camera)}
-              busy={picking || saving}
               onOpen={(id) => navigate({ name: 'story', id })}
               onDemo={() => navigate({ name: 'story', id: 'sample' })}
             />
@@ -367,11 +366,9 @@ export function BeforeApp({ screen }: { screen: Screen }) {
             <Story
               project={current}
               demo={current.id === 'sample'}
-              onAdd={(camera) => void pick(current.id, camera)}
               onEdit={() => showDialog({ type: 'project', project: current })}
               onEditEntry={(entry) => showDialog({ type: 'moment', project: current, entry })}
               onCompare={() => navigate({ name: 'compare', id: current.id })}
-              onCreate={(camera) => void pick(undefined, camera)}
               busy={picking || saving}
             />
           )}
@@ -393,6 +390,25 @@ export function BeforeApp({ screen }: { screen: Screen }) {
           )}
         </View>
       </ScrollView>
+      {(screen.name === 'home' || (screen.name === 'story' && current)) && (
+        <View style={s.photoBar}>
+          <View style={[s.container, { gap: 10 }, screen.name === 'story' && { maxWidth: 620 }]}>
+            {((screen.name === 'home' && journal.projects.length > 0) ||
+              current?.id === 'sample') && (
+              <Text style={[ui.body, { fontSize: 12 }]}>Start a new story</Text>
+            )}
+            <PhotoActions
+              busy={picking || saving}
+              onPick={(camera) =>
+                void pick(
+                  screen.name === 'story' && current?.id !== 'sample' ? current?.id : undefined,
+                  camera,
+                )
+              }
+            />
+          </View>
+        </View>
+      )}
       {dialog?.type === 'project' && (
         <Sheet title="Story details" onClose={closeDialog}>
           <ProjectForm project={dialog.project} busy={saving} error={error} onSave={saveProject} />
@@ -691,6 +707,13 @@ const s = StyleSheet.create({
     letterSpacing: -1.2,
   },
   content: { padding: 22, paddingBottom: 32 },
+  photoBar: {
+    paddingHorizontal: 22,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderColor: c.line,
+    backgroundColor: c.background,
+  },
   container: { maxWidth: 760, width: '100%', alignSelf: 'center' },
   errorBox: {
     backgroundColor: '#F8E5DD',

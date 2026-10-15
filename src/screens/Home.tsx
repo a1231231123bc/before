@@ -4,20 +4,15 @@ import { Project, orderedEntries, formatDate } from '../domain';
 import { photoSource } from '../photos';
 import { colors as c, fonts as f } from '../theme';
 import { Button, Icon, IconButton, s as ui } from '../components/UI';
-import { PhotoActions } from '../components/PhotoActions';
 
 export function Home({
   projects,
-  onCreate,
   onOpen,
   onDemo,
-  busy,
 }: {
   projects: Project[];
-  onCreate: (camera: boolean) => void;
   onOpen: (id: string) => void;
   onDemo: () => void;
-  busy: boolean;
 }) {
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
@@ -45,10 +40,8 @@ export function Home({
         {!projects.length && (
           <Text style={ui.body}>One photo today. Another when things change.</Text>
         )}
-        {!!projects.length && <Text style={ui.body}>Start a new story</Text>}
-        <PhotoActions onPick={onCreate} busy={busy} />
       </View>
-      {searching && (
+      {searching && !!projects.length && (
         <View style={s.search}>
           <Icon name="search" size={18} color={c.muted} />
           <TextInput

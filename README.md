@@ -13,7 +13,7 @@ Built with **React Native, Expo SDK 57, Expo Router, and TypeScript** for iOS, A
 
 ## First working slice
 
-- Start a story with a photo: an automatic name and today’s date, with no required typing.
+- Start a story with a photo: an automatic name and today’s date, with no required typing. Camera/library actions stay at the bottom while you scroll.
 - Take photos on iOS and Android or import from the system library; each photo saves immediately.
 - Tap a photo to optionally edit its date or note. Rename stories and choose from five categories in story details; search by name or category.
 - Browse a compact photo gallery, with the latest first.

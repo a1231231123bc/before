@@ -4,7 +4,6 @@ import { Project, Entry, daySpan, formatDate, orderedEntries } from '../domain';
 import { photoSource } from '../photos';
 import { colors as c, fonts as f } from '../theme';
 import { Button, Icon, IconButton, Label, Sheet, s as ui } from '../components/UI';
-import { PhotoActions } from '../components/PhotoActions';
 import { Comparison } from '../components/Comparison';
 import { exportComparison } from '../export';
 import { VideoExportSheet } from '../video/VideoExportSheet';
@@ -13,20 +12,16 @@ import type { VideoInput } from '../video/spec';
 export function Story({
   project,
   demo,
-  onAdd,
   onEdit,
   onEditEntry,
   onCompare,
-  onCreate,
   busy,
 }: {
   project: Project;
   demo: boolean;
-  onAdd: (camera: boolean) => void;
   onEdit: () => void;
   onEditEntry: (entry: Entry) => void;
   onCompare: () => void;
-  onCreate: (camera: boolean) => void;
   busy: boolean;
 }) {
   const entries = orderedEntries(project);
@@ -45,10 +40,8 @@ export function Story({
           {project.category !== 'Everyday' ? ` · ${project.category}` : ''}
         </Text>
       </View>
-      {demo ? (
+      {demo && (
         <Text style={ui.body}>Sample photos of two different plants, for trying the app.</Text>
-      ) : (
-        <PhotoActions onPick={onAdd} busy={busy} />
       )}
       <Button
         title="Compare photos"
@@ -91,12 +84,6 @@ export function Story({
           </Pressable>
         ))}
       </View>
-      {demo && (
-        <View style={{ gap: 12 }}>
-          <Text style={ui.body}>Start your own story</Text>
-          <PhotoActions onPick={onCreate} busy={busy} />
-        </View>
-      )}
     </View>
   );
 }
