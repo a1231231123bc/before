@@ -47,10 +47,10 @@ test('photo-first creation and additions need no typing and survive a reload', a
   await page.reload();
   await expect(page.getByRole('button', { name: /^Edit photo from/ })).toHaveCount(2);
   await expect(page.getByRole('button', { name: 'Compare photos' })).toBeEnabled();
-  await page.getByRole('button', { name: 'Before home' }).click();
+  await page.getByRole('button', { name: 'Frameago home' }).click();
   await addPhoto(page);
   await expect(page.getByRole('heading', { name: 'Story 2', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Before home' }).click();
+  await page.getByRole('button', { name: 'Frameago home' }).click();
   await expect(page.getByRole('button', { name: /^Open Story/ })).toHaveCount(2);
 });
 
@@ -73,7 +73,7 @@ test('optional details, search, comparison, PNG export and deletion still work',
   await expect(page.getByRole('heading', { name: 'Balcony garden' })).toBeVisible();
   await page.reload();
   await expect(page.getByText('A fresh beginning', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Before home' }).click();
+  await page.getByRole('button', { name: 'Frameago home' }).click();
   await page.getByRole('button', { name: 'Search stories' }).click();
   await page.getByRole('textbox', { name: 'Search stories' }).fill('plants');
   await page.getByRole('button', { name: 'Open Balcony garden', exact: true }).click();
@@ -195,6 +195,6 @@ test('sample comparison works without adding sample data to the journal', async 
   );
   await page.getByRole('button', { name: 'Done choosing' }).click();
   await page.reload();
-  await page.getByRole('button', { name: 'Before home' }).click();
+  await page.getByRole('button', { name: 'Frameago home' }).click();
   await expect(page.getByRole('heading', { name: 'Start with a photo.' })).toBeVisible();
 });

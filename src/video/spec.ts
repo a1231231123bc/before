@@ -39,7 +39,7 @@ export function videoFilename(title: string) {
       .normalize('NFKC')
       .replace(/[^\p{L}\p{N}]+/gu, '-')
       .replace(/^-|-$/g, '')
-      .slice(0, 70) || 'before'
+      .slice(0, 70) || 'frameago'
   }-progress.mp4`;
 }
 

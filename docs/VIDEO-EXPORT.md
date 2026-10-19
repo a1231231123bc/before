@@ -1,12 +1,12 @@
 # Six-second progress video
 
-On the comparison screen, choose two moments and tap **Create 6-second video**. Before creates a silent H.264/MP4 on the device, displays a playable preview, and offers **Save to Photos** and **Share video**. The browser offers a download and Web Share when supported. Instagram publication is completed by the user in Instagram; Before does not connect to an Instagram account or auto-publish.
+On the comparison screen, choose two moments and tap **Create 6-second video**. Frameago creates a silent H.264/MP4 on the device, displays a playable preview, and offers **Save to Photos** and **Share video**. The browser offers a download and Web Share when supported. Instagram publication is completed by the user in Instagram; Frameago does not connect to an Instagram account or auto-publish.
 
 ## Output
 
 - 1080 × 1920, portrait 9:16, H.264 / YUV 4:2:0, 30 fps, exactly 180 frames / 6 seconds.
 - Hold before for 1 second, reveal after over 2 seconds, hold after for 1 second, return over 2 seconds. The first and last frame have identical composition.
-- Center-cropped photos, project title, dates, elapsed days, and Before branding. The title is fitted with an ellipsis if necessary. No music is embedded.
+- Center-cropped photos, project title, dates, elapsed days, and Frameago branding. The title is fitted with an ellipsis if necessary. No music is embedded.
 - The selected before/after order is preserved, including comparisons in reverse chronological order.
 
 ## Implementation
@@ -34,7 +34,7 @@ On iOS, saving requests **add-only** Photos permission at the user's tap. It use
 
 - **h264-mp4-encoder 1.0.12**: [MIT license](licenses/h264-mp4-encoder-MIT.txt), [upstream source and build instructions](https://github.com/TrevorSundberg/h264-mp4-encoder). Its browser distribution is bundled unmodified.
 - **minih264**: CC0/public-domain H.264 encoder; [source used by the encoder](https://github.com/TrevorSundberg/minih264).
-- **libmp4v2**: [MPL 1.1 license](licenses/libmp4v2-MPL-1.1.txt); [source, including the upstream WebAssembly modifications](https://github.com/TrevorSundberg/libmp4v2). Before makes no changes to this library. The upstream h264-mp4-encoder repository pins its submodule source revisions and provides the build scripts.
+- **libmp4v2**: [MPL 1.1 license](licenses/libmp4v2-MPL-1.1.txt); [source, including the upstream WebAssembly modifications](https://github.com/TrevorSundberg/libmp4v2). Frameago makes no changes to this library. The upstream h264-mp4-encoder repository pins its submodule source revisions and provides the build scripts.
 - Bundled fonts retain their existing SIL Open Font License notices in `docs/licenses/`.
 
 The app's About screen links to these notices and sources. Maintain them when updating the encoder.

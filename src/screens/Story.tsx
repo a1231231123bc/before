@@ -241,7 +241,7 @@ export function CompareScreen({ project }: { project: Project }) {
               ))}
             </View>
             <View style={[ui.row, { justifyContent: 'space-between' }]}>
-              <Text style={s.shareBrand}>before.</Text>
+              <Text style={s.shareBrand}>frameago.</Text>
               <Text style={s.shareTag}>Small moments. Visible progress.</Text>
             </View>
           </View>

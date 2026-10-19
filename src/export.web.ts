@@ -50,7 +50,7 @@ export async function exportComparison({ title, before, after }: ExportOptions) 
   });
   ctx.fillStyle = '#455942';
   ctx.font = '44px Georgia';
-  ctx.fillText('before.', 64, 1330);
+  ctx.fillText('frameago.', 64, 1330);
   ctx.font = '22px sans-serif';
   ctx.fillText('Small moments. Visible progress.', 540, 1326);
   const blob = await new Promise<Blob>((resolve, reject) =>
@@ -62,7 +62,7 @@ export async function exportComparison({ title, before, after }: ExportOptions) 
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${title.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'before'}-comparison.png`;
+  link.download = `${title.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'frameago'}-comparison.png`;
   document.body.appendChild(link);
   link.click();
   link.remove();

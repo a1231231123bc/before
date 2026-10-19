@@ -85,7 +85,7 @@ async function makeScene(job: VideoJob) {
   bg.fillText(job.beforeDate, 64, 1604);
   bg.fillStyle = '#455942';
   bg.font = '52px BeforeSerif';
-  bg.fillText('before.', 64, 1712);
+  bg.fillText('frameago.', 64, 1712);
   bg.font = '24px BeforeSans';
   bg.textAlign = 'right';
   bg.fillText('Small moments. Visible progress.', 1016, 1708);

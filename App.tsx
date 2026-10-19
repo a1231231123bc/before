@@ -300,7 +300,7 @@ export function BeforeApp({ screen }: { screen: Screen }) {
         <View style={s.headerInner}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Before home"
+            accessibilityLabel="Frameago home"
             onPress={() => navigate({ name: 'home' })}
             style={ui.row}
           >
@@ -308,13 +308,13 @@ export function BeforeApp({ screen }: { screen: Screen }) {
               <Icon name="compare" color={c.white} size={21} />
             </View>
             <Text style={s.wordmark}>
-              before<Text style={{ color: c.accent }}>.</Text>
+              frameago<Text style={{ color: c.accent }}>.</Text>
             </Text>
           </Pressable>
           <View style={ui.row}>
             <IconButton
               name="info"
-              label="About Before"
+              label="About Frameago"
               onPress={() => navigate({ name: 'about' })}
             />
           </View>
@@ -457,8 +457,8 @@ export function BeforeApp({ screen }: { screen: Screen }) {
         >
           <Text style={ui.body}>
             {dialog.type === 'deleteProject'
-              ? `“${dialog.project.title}” and its ${dialog.project.entries.length} photos will be removed from Before.`
-              : 'This photo and its note will be removed from Before.'}{' '}
+              ? `“${dialog.project.title}” and its ${dialog.project.entries.length} photos will be removed from Frameago.`
+              : 'This photo and its note will be removed from Frameago.'}{' '}
             Your original library photos won’t be affected. This can’t be undone.
           </Text>
           {!!error && <Text style={s.errorText}>{error}</Text>}
@@ -602,14 +602,14 @@ function About() {
         The little things{'\n'}add up.
       </Text>
       <Text style={ui.body}>
-        Before is a quiet place for the things you’re growing, making, and becoming. Keep a photo.
+        Frameago is a quiet place for the things you’re growing, making, and becoming. Keep a photo.
         Leave a note. Come back and see how far you’ve come.
       </Text>
       <View style={s.aboutCard}>
         <Icon name="lock" color={c.green} size={28} />
         <Text style={s.aboutTitle}>Your story stays yours.</Text>
         <Text style={ui.body}>
-          Your photos and notes are stored on this device. Before has no account, analytics,
+          Your photos and notes are stored on this device. Frameago has no account, analytics,
           advertising, or cloud sync. Nothing is uploaded by the app.
         </Text>
         <Text style={ui.body}>
@@ -625,7 +625,7 @@ function About() {
       <View style={s.aboutCard}>
         <Text style={s.aboutTitle}>Made for the in-between.</Text>
         <Text style={ui.body}>
-          Before · 0.1.0{'\n'}An independent photo journal, built with React Native and Expo.
+          Frameago · 0.1.0{'\n'}An independent photo journal, built with React Native and Expo.
         </Text>
         <Button
           title="View the project on GitHub"

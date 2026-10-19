@@ -7,7 +7,7 @@ function openDatabase(): Promise<IDBDatabase> {
     request.onupgradeneeded = () => request.result.createObjectStore('journal');
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
-    request.onblocked = () => reject(new Error('Close other Before tabs and try again.'));
+    request.onblocked = () => reject(new Error('Close other Frameago tabs and try again.'));
   });
 }
 

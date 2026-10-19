@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Before",
+    "name": "Frameago",
     "slug": "before",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -24,7 +24,7 @@
     },
     "web": {
       "favicon": "./assets/icon.png",
-      "name": "Before — Your progress journal",
+      "name": "Frameago — Your progress journal",
       "description": "Small moments. Visible progress. A private photo journal.",
       "bundler": "metro",
       "output": "single"
@@ -33,8 +33,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Choose photos to keep in your private Before journal.",
-          "cameraPermission": "Take photos to document your progress in Before.",
+          "photosPermission": "Choose photos to keep in your private Frameago journal.",
+          "cameraPermission": "Take photos to document your progress in Frameago.",
           "microphonePermission": false
         }
       ],
@@ -53,8 +53,8 @@
       [
         "expo-media-library",
         {
-          "photosPermission": "Choose photos to keep in your private Before journal.",
-          "savePhotosPermission": "Save your Before progress videos to Photos to share them on Instagram.",
+          "photosPermission": "Choose photos to keep in your private Frameago journal.",
+          "savePhotosPermission": "Save your Frameago progress videos to Photos to share them on Instagram.",
           "granularPermissions": [],
           "isAccessMediaLocationEnabled": false
         }

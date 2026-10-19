@@ -45,7 +45,7 @@ export function VideoExportSheet({ input, onClose }: { input: VideoInput; onClos
       });
     const watchdog = setInterval(() => {
       if (status.current === 'rendering' && Date.now() - lastActivity.current > 120_000)
-        fail('Video creation stopped responding. Keep Before open and try again.');
+        fail('Video creation stopped responding. Keep Frameago open and try again.');
     }, 5000);
     return () => {
       active = false;
@@ -158,7 +158,7 @@ export function VideoExportSheet({ input, onClose }: { input: VideoInput; onClos
             {html
               ? `Creating your video… ${Math.round(progress * 100)}%`
               : 'Preparing your photos…'}
-            {'\n'}Keep Before open. Closing cancels the export.
+            {'\n'}Keep Frameago open. Closing cancels the export.
           </Text>
         </View>
       )}

@@ -14,7 +14,7 @@ test('video has before/after holds, a reversible reveal, and matching loop endpo
 
 test('export filenames keep Unicode titles and cannot escape the export directory', () => {
   assert.equal(videoFilename('../Мой сад / 🪴'), 'Мой-сад-progress.mp4');
-  assert.equal(videoFilename('...'), 'before-progress.mp4');
+  assert.equal(videoFilename('...'), 'frameago-progress.mp4');
   assert.ok(videoFilename('a'.repeat(200)).length < 100);
 });
 

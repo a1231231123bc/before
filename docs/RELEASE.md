@@ -1,4 +1,4 @@
-# Before 0.1 — release work
+# Frameago 0.1 — release work
 
 ## Implemented in the first slice
 
@@ -16,7 +16,7 @@ The app is linked to [@pavel667/before](https://expo.dev/accounts/pavel667/proje
 
 Apple Developer membership was activated on 19 October 2026. The first signed production build, version `0.1.0` build `2`, [completed successfully on EAS](https://expo.dev/accounts/pavel667/projects/before/builds/5b0e42d3-1b6c-49dc-9719-3941ab015a93) from commit `8487fe7`.
 
-The App Store Connect app has Apple ID `6824610218`, saved in the production submit profile. The name `Before` was unavailable, so EAS created the temporary listing name `Before (540c7d)`; choose the final available name before public release. Internal testing group `Team (Expo)` includes the account owner. EAS Submit uses a remotely stored App Store Connect key with the `APP_MANAGER` role. Do not commit signing keys or authentication sessions.
+The App Store Connect app has Apple ID `6824610218`, saved in the production submit profile. The name `Before` was unavailable, so EAS created the temporary listing name `Before (540c7d)`; the owner selected `Frameago` on 19 October 2026. App UI, exports, and native display-name configuration now use Frameago; saving the new listing name in App Store Connect is still pending. Build `2` contains the old branding, so a fresh production build is required for the new name on the iPhone. Internal testing group `Team (Expo)` includes the account owner. EAS Submit uses a remotely stored App Store Connect key with the `APP_MANAGER` role. Do not commit signing keys or authentication sessions.
 
 The owner needs active Apple Developer Program membership and access to App Store Connect. Enter Apple credentials and two-factor codes directly in the local CLI prompts, never in the repository or chat. Membership enrollment and agreement acceptance are owner actions.
 

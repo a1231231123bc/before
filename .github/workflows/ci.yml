@@ -1,4 +1,4 @@
-name: Check Before
+name: Check Frameago
 on:
   push:
     branches: [main]
