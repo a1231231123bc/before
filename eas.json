@@ -12,5 +12,5 @@
       "ios": { "image": "sdk-57" }
     }
   },
-  "submit": { "production": {} }
+  "submit": { "production": { "ios": { "ascAppId": "6824610218" } } }
 }
