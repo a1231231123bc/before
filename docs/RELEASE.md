@@ -22,7 +22,8 @@ Internal identifiers retain `before` so existing installations keep their identi
 - Saved the English title, subtitle, description, keywords, promotional text, categories, 4+ questionnaire, review notes and private review contact in App Store Connect.
 - Set the price to zero and configured availability in all 175 territories, subject to Apple's regional compliance requirements.
 - Saved content rights information for the licensed Unsplash sample photographs.
-- Prepared “Data Not Collected” privacy answers. Publishing the declaration still requires the owner's confirmation of Apple's accuracy and update commitment.
+- Published “Data Not Collected” privacy answers after the owner's explicit confirmation of Apple's accuracy and update commitment.
+- Saved EU Digital Services Act **non-trader** status after the owner confirmed Frameago is a personal hobby outside business or professional activity. App Store Connect shows compliance as active.
 - Captured three real native screenshots each on iPhone 16 Pro (1206 × 2622) and iPad Pro 13-inch M4 (2064 × 2752), converted to JPEG without alpha channels for the store. The story screen identifies the photographs as different plants used for demonstration.
 - Uploaded all six screenshots to App Store Connect and verified successful Apple image processing.
 - Verified the six-second MP4 export reaches its playable preview on both simulators.
@@ -59,10 +60,9 @@ Always submit the exact successful build ID. Uploading with EAS Submit does not 
 
 ## Remaining owner decisions and release gate
 
-- Confirm the privacy declaration's accuracy and commitment to update it if data handling changes.
-- Choose the EU Digital Services Act trader status based on the owner's actual activity. Free distribution alone does not establish non-trader status. No choice has been inferred.
 - Review the completed store listing and install the final `1.0.0 (4)` build.
 - Submit App Review only after the owner explicitly asks. Keep manual release enabled.
+- Update the privacy declaration if data handling changes, and reassess trader status before starting commercial or professional activity.
 
 ## Product limitations and future checks
 
