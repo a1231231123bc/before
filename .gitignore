@@ -46,5 +46,9 @@ yarn-error.*
 /coverage/
 .env
 
+# Apple review contact details stay local; public metadata lives in store.config.json.
+/store.private.json
+/store.local.json
+
 # Rebuilt by postinstall / npm run build:video
 /src/video/generated/

@@ -4,7 +4,7 @@
     "base": { "node": "24.4.1" },
     "development": { "extends": "base", "developmentClient": true, "distribution": "internal" },
     "preview": { "extends": "base", "distribution": "internal", "android": { "buildType": "apk" } },
-    "simulator": { "extends": "preview", "ios": { "simulator": true } },
+    "simulator": { "extends": "preview", "ios": { "simulator": true, "image": "sdk-57" } },
     "production": {
       "extends": "base",
       "distribution": "store",

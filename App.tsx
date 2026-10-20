@@ -39,6 +39,7 @@ import { Button, Field, Icon, IconButton, Label, Sheet, s as ui } from './src/co
 import { Home } from './src/screens/Home';
 import { PhotoActions } from './src/components/PhotoActions';
 import { CompareScreen, Story } from './src/screens/Story';
+import { version } from './package.json';
 
 type Screen =
   | { name: 'home' }
@@ -621,11 +622,23 @@ function About() {
           system’s photo picker. Saving a video asks for permission to add it to Photos. Sharing
           sends only the comparison you choose to the app you select.
         </Text>
+        <Button
+          title="Privacy policy"
+          tone="secondary"
+          icon="arrow"
+          onPress={() => void Linking.openURL('https://a1231231123bc.github.io/before/privacy/')}
+        />
+        <Button
+          title="Help & support"
+          tone="ghost"
+          onPress={() => void Linking.openURL('https://a1231231123bc.github.io/before/support/')}
+        />
       </View>
       <View style={s.aboutCard}>
         <Text style={s.aboutTitle}>Made for the in-between.</Text>
         <Text style={ui.body}>
-          Frameago · 0.1.0{'\n'}An independent photo journal, built with React Native and Expo.
+          Frameago · {version}
+          {'\n'}An independent photo journal, built with React Native and Expo.
         </Text>
         <Button
           title="View the project on GitHub"
