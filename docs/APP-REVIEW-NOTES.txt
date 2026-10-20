@@ -1,0 +1,15 @@
+Frameago is a free, offline photo journal for iPhone and iPad. No login, subscription, in-app purchase, server connection, or special hardware is required.
+
+Suggested review path:
+1. On the home screen, tap "Explore a sample story" to open "A little greener". The bundled photos show different plants and are labelled as samples for demonstration.
+2. Open "Compare photos" and drag the before/after slider. Select the two moments to compare.
+3. Export a still image or create a six-second 1080 x 1920 MP4. Keep the app open while the video is prepared. Preview it, save it to Photos, or open the system share sheet. Sharing never posts automatically.
+4. Return home and choose Library to import a photo, or Take photo on a device with a camera. The first photo starts a story; add another moment from that story. Dates, notes, titles, and categories can be edited.
+5. Open About using the information button in the header to find the privacy policy and support links.
+
+Camera access is requested only when taking a photo. Photos add-only permission is requested when saving an exported video. No microphone permission is requested.
+
+Photos, notes, and journal metadata remain in local app storage. There are no user accounts, analytics, advertisements, cloud sync, or automatic uploads. Removing the app may remove the journal; exported media is not a complete restorable backup. The app and public support page explain this limitation.
+
+Support: pavelkurmachev@gmail.com
+Privacy: https://a1231231123bc.github.io/before/privacy/

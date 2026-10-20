@@ -1,0 +1,74 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "version": "1.0.0",
+    "copyright": "2026 Pavel Kurmachev",
+    "categories": ["PHOTO_AND_VIDEO", "LIFESTYLE"],
+    "release": { "automaticRelease": false },
+    "info": {
+      "en-US": {
+        "title": "Frameago",
+        "subtitle": "Your before & after journal",
+        "description": "Small moments. Visible progress.\n\nFrameago is a quiet place for the things you grow, make, and become. Take a photo today, add another when things change, and see how far you've come.\n\nSTART WITH A PHOTO\nTake a picture or choose one from your library. Your story starts right away. Titles, notes, dates, and categories are there when you need them, without getting in the way.\n\nSEE WHAT CHANGED\nKeep dated moments together in a visual timeline. Choose two photos and drag the comparison slider to see the details side by side.\n\nMAKE A LITTLE MOVIE\nTurn your comparison into a six-second vertical MP4 with a moving slider. Preview it, save it to Photos, or share it with an app you choose. You can also export a still image.\n\nYOUR STORY STAYS YOURS\nYour journal lives on your device. No account, ads, subscriptions, analytics, or cloud sync. Photos and videos are processed locally, and nothing is posted automatically.\n\nFOR EVERY KIND OF PROGRESS\nPlants, creative projects, a room coming together, a collection taking shape: give the changes you care about a place to live.\n\nFrameago is free. An included sample story lets you try the comparison before adding your own photos.\n\nPlease keep copies of important photos. Removing the app can remove your journal; exported images and videos are keepsakes, not a complete journal backup.\n\nQuestions or ideas? pavelkurmachev@gmail.com",
+        "keywords": [
+          "photo",
+          "progress",
+          "diary",
+          "compare",
+          "slider",
+          "timeline",
+          "before",
+          "after",
+          "plants",
+          "projects",
+          "transformation"
+        ],
+        "promoText": "Keep a photo today. Come back when things change. Compare your moments and save a six-second video — all on your device.",
+        "marketingUrl": "https://a1231231123bc.github.io/before/",
+        "supportUrl": "https://a1231231123bc.github.io/before/support/",
+        "privacyPolicyUrl": "https://a1231231123bc.github.io/before/privacy/",
+        "screenshots": {
+          "APP_IPHONE_61": [
+            "store/apple/screenshots/en-US/iphone/01-compare.jpg",
+            "store/apple/screenshots/en-US/iphone/02-story.jpg",
+            "store/apple/screenshots/en-US/iphone/03-video.jpg"
+          ],
+          "APP_IPAD_PRO_3GEN_129": [
+            "store/apple/screenshots/en-US/ipad/01-compare.jpg",
+            "store/apple/screenshots/en-US/ipad/02-story.jpg",
+            "store/apple/screenshots/en-US/ipad/03-video.jpg"
+          ]
+        }
+      }
+    },
+    "advisory": {
+      "ageRatingOverride": "NONE",
+      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+      "contests": "NONE",
+      "gambling": false,
+      "gamblingSimulated": "NONE",
+      "horrorOrFearThemes": "NONE",
+      "kidsAgeBand": null,
+      "koreaAgeRatingOverride": "NONE",
+      "lootBox": false,
+      "matureOrSuggestiveThemes": "NONE",
+      "medicalOrTreatmentInformation": "NONE",
+      "profanityOrCrudeHumor": "NONE",
+      "sexualContentGraphicAndNudity": "NONE",
+      "sexualContentOrNudity": "NONE",
+      "unrestrictedWebAccess": false,
+      "violenceCartoonOrFantasy": "NONE",
+      "violenceRealistic": "NONE",
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+      "advertising": false,
+      "ageAssurance": false,
+      "ageRatingOverrideV2": "NONE",
+      "developerAgeRatingInfoUrl": null,
+      "gunsOrOtherWeapons": "NONE",
+      "healthOrWellnessTopics": false,
+      "messagingAndChat": false,
+      "parentalControls": false,
+      "userGeneratedContent": false
+    }
+  }
+}
