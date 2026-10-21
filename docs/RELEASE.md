@@ -29,7 +29,17 @@ Internal identifiers retain `before` so existing installations keep their identi
 - Verified the six-second MP4 export reaches its playable preview on both simulators.
 - Lint, type checking, domain tests and GitHub CI passed for the app changes.
 
-The [production build](https://expo.dev/accounts/pavel667/projects/before/builds/33ebf6db-41ab-405d-8c5b-3053656f680f) completed successfully from commit `78243ba`. Its [TestFlight upload](https://expo.dev/accounts/pavel667/projects/before/submissions/296d36f7-a266-42ee-9ceb-93feb460bd5f) was scheduled for the existing `Team (Expo)` group. Upload, Apple processing and selection in the store version are separate steps. The [matching simulator build](https://expo.dev/accounts/pavel667/projects/before/builds/77343b74-c0aa-4314-baf6-de676e256b12) also completed successfully.
+The [production build](https://expo.dev/accounts/pavel667/projects/before/builds/33ebf6db-41ab-405d-8c5b-3053656f680f) completed successfully from commit `78243ba`. Its [TestFlight upload](https://expo.dev/accounts/pavel667/projects/before/submissions/296d36f7-a266-42ee-9ceb-93feb460bd5f) was scheduled for the existing `Team (Expo)` group. On 21 October, Apple processing was verified as `VALID`, and build `1.0.0 (4)` was selected for the store version. The [matching simulator build](https://expo.dev/accounts/pavel667/projects/before/builds/77343b74-c0aa-4314-baf6-de676e256b12) also completed successfully.
+
+## App Review submission — 21 October 2026
+
+Following the owner's explicit authorization, version **1.0.0 (4)** was submitted to public App Review at **12:27 Dubai time (08:27 UTC)**. Apple returned **`WAITING_FOR_REVIEW`**. This is submission confirmation, not approval or public availability.
+
+- Review submission: `ea71ce3b-489d-4726-b648-b872f37b8e76`
+- App Store version: `aa454236-37b0-4036-a8b2-dfb57d43c5c4`
+- Apple build: `8cc6622b-8d06-4c69-a611-4cfa656f38a6`
+- Release mode remains **manual** after approval.
+- Follow the status in [App Store Connect](https://appstoreconnect.apple.com/apps/6824610218/distribution/reviewsubmissions).
 
 ## Store metadata workflow
 
@@ -58,10 +68,10 @@ npx eas-cli@latest submit --platform ios --profile production --id <successful-b
 
 Always submit the exact successful build ID. Uploading with EAS Submit does not submit public App Review or publish the app. Wait for Apple processing, verify the version/build number and add it to the internal testing group.
 
-## Remaining owner decisions and release gate
+## After App Review
 
-- Review the completed store listing and install the final `1.0.0 (4)` build.
-- Submit App Review only after the owner explicitly asks. Keep manual release enabled.
+- Address any review questions or rejection reasons against the submitted version.
+- After Apple approves the app, publish only when the owner authorizes release. Keep manual release enabled.
 - Update the privacy declaration if data handling changes, and reassess trader status before starting commercial or professional activity.
 
 ## Product limitations and future checks
